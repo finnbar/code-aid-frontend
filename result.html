@@ -64,7 +64,11 @@
 
     var isLoggedIn = function() {
       $.getJSON("http://api.codeaid.xyz/auth/status", function (d) {
-        if(d == "" || d == null) {
+        var count = 0;
+        $.each(d,function(k,v) {
+          count += 1;
+        });
+        if(count == 0) {
           return false;
         } else {
           return true;
