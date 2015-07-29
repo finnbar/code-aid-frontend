@@ -83,17 +83,24 @@
 
     var isLoggedIn = function() {
       $.getJSON("http://api.codeaid.xyz/auth/status", function (d) {
+        var isthere = false;
+        var name = "";
         $.each(d,function(k,v) {
-          if(k == "id") return true;
+          if(k == "id") isthere = true;
+          if(k == "name") name = v;
         });
+        if(isthere) {
+          return name;
+        }
         return false
       });
     };
 
     $(document).ready(function() {
       highlighting();
-      if(isLoggedIn()) {
-        $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/logout">Log Out <i class="fa fa-user"></i></a>');
+      var name = isLoggedIn();
+      if(name) {
+        $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/logout">Log Out ('+name+') <i class="fa fa-user"></i></a>');
       } else {
         $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/login">Log In/Sign Up <i class="fa fa-user"></i></a>');
       }
