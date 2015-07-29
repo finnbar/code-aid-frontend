@@ -20,7 +20,7 @@
           <a class="navbar-brand" href="index.html"><img alt="CodeAid" src="logo3.png" height="50px"></a>
         </div>
         <div class="navbar-right">
-          <a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/login">Log In/Sign Up <i class="fa fa-user"></i></a>
+          <a id="accounts"></a>
           <a class="navbar-brand btn btn-default" id="new-snip-navbar"href="new.html">New Snip <i class="fa fa-file-code-o"></i></a>
         </div>
       </div>
@@ -62,10 +62,24 @@
       });
     };
 
+    var isLoggedIn = function() {
+      $.getJSON("http://api.codeaid.xyz/auth/status", function (d) {
+        if(d == "" || d == null) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    };
 
     $(document).ready(function () {
       addSingleSnip("Snip 1","int setup() {\n\treturn 1;\n}",10,[["Person A","MY GOODNESS THE FEELS"],["Person B","WHAT ARE YOU SAYING PERSON A"],["Person C","WHY ARE YOU CAPS unlocked please stop shouting."]],"","cpp");
       highlighting();
+      if(isLoggedIn()) {
+        $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/logout">Log Out <i class="fa fa-user"></i></a>');
+      } else {
+        $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/login">Log In/Sign Up <i class="fa fa-user"></i></a>');
+      }
     });
 
     addSingleSnip = function(title,content,score,comments,id,langname) {

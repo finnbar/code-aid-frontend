@@ -23,7 +23,7 @@
           </div>
           <div class="navbar-right">
             <button type="button" class="btn btn-primary" id="helpbtn" data-toggle="modal" data-target="#help">Help!</button>
-            <a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/login">Log In/Sign Up <i class="fa fa-user"></i></a>
+            <a id="accounts"></a>
             <a class="navbar-brand btn btn-default" id="new-snip-navbar" href="new.html">New Snip <i class="fa fa-file-code-o"></i></a>
           </div>
         </div>
@@ -81,8 +81,23 @@
       });
     };
 
+    var isLoggedIn = function() {
+      $.getJSON("http://api.codeaid.xyz/auth/status", function (d) {
+        if(d == "" || d == null) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    };
+
     $(document).ready(function() {
       highlighting();
+      if(isLoggedIn()) {
+        $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/logout">Log Out <i class="fa fa-user"></i></a>');
+      } else {
+        $("#accounts").html('<a class="navbar-brand btn btn-default" id="new-snip-navbar" href="http://api.codeaid.xyz/auth/login">Log In/Sign Up <i class="fa fa-user"></i></a>');
+      }
       var client = algoliasearch("AppID","SearchOnlyAPI");
       var index = client.initIndex("IndexName");
 
