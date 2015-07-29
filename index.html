@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="styles.css" type="text/css"></style>
     <link rel="stylesheet" href="highlight/styles/monokai.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   </head>
   
   <body>
@@ -105,7 +105,8 @@
       $("#snips").html("");
     };
 
-    addSnip = function(title,content,score,comments,id,above) {
+    addSnip = function(title,content,score,comments,id,langname,above) {
+      var lang = '<span class="badge">'+langname+'</span><br />';
       var score = "<h4>" + score + " points</h4>";
       var ratings = "<div class='well well-sm'><h5>"+comments[comments.length-1][0]+": </h5><h6>"+comments[comments.length-1][1]+"</h6></div>";
       if(comments.length > 1) {
@@ -117,9 +118,9 @@
         }
       }
       if(above) {
-        $("#snips").html('<a href="result.html?id='+id+'"><div class="panel panel-default" id="snip-'+counter+'"><div class="panel-header snip-title"><h3>'+title+'</h3></div><pre class="panel-body snip-body">'+content+'</pre><div class="panel-footer snip-ratings">'+score+ratings+'</div></div></a>' + $("#snips").html());
+        $("#snips").html('<a href="result.html?id='+id+'"><div class="panel panel-default" id="snip-'+counter+'"><div class="panel-header snip-title"><h3>'+title+'</h3>'+lang+'<br /></div><pre class="panel-body snip-body '+langname+'">'+content+'</pre><div class="panel-footer snip-ratings">'+score+ratings+'</div></div></a>' + $("#snips").html());
       } else {
-        $("#snips").html($("#snips").html()+'<a href="result.html?id='+id+'"><div class="panel panel-default" id="snip-'+counter+'"><div class="panel-header snip-title"><h3>'+title+'</h3></div><pre class="panel-body snip-body">'+content+'</pre><div class="panel-footer snip-ratings">'+score+ratings+'</div></div></a>');
+        $("#snips").html($("#snips").html()+'<a href="result.html?id='+id+'"><div class="panel panel-default" id="snip-'+counter+'"><div class="panel-header snip-title"><h3>'+title+'</h3>'+lang+'<br /></div><pre class="panel-body snip-body">'+content+'</pre><div class="panel-footer snip-ratings">'+score+ratings+'</div></div></a>');
       }
       $("#snip-"+counter).hide();
       $("#snip-"+counter).fadeIn(1000, function(){});
