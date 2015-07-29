@@ -1,0 +1,81 @@
+<!doctype html>
+
+<!-- This is our frontpage! It has the massive search bar and the most recent snips! -->
+
+<html>
+  
+  <head>
+    <title>CodeAid</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://djyhxgczejc94.cloudfront.net/frameworks/bootstrap/3.0.0/themes/white-plum/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles.css" type="text/css"></style>
+    <link rel="stylesheet" href="highlight/styles/monokai.css">
+  </head>
+  
+  <body>
+    <nav class="navbar navbar-default large-navbar">
+      <div class="container-fluid">
+        <div class="navbar-left">
+          <a class="navbar-brand" href="index.html"><img alt="CodeAid" src="logo3.png" height="50px"></a>
+        </div>
+        <div class="navbar-right">
+          <a class="navbar-brand btn btn-default" id="new-snip-navbar"href="new.html">New Snip <i class="fa fa-file-code-o"></i></a>
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <div class="col-md-6">
+        <div id="snip"></div>
+      </div>
+      <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-header" id="comments-title"><h3 class="cool-comments-title">Comments</h3></div>
+        <div class="panel-body" id="comments-form">
+          <div class="panel panel-default">
+            <div class="panel-header"><h4 class="cool-comments-title">Add a comment...</h4></div>
+            <div class="panel-body">
+              <div class="input-group">
+                <input type="text" class="form-control" id="commentInput" placeholder="Your comment...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Submit</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" id="comments-section"></div>
+      </div>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Made by Freddy and Finnbar</p>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="highlight/highlight.pack.js"></script>
+    <script type="text/javascript">
+    var highlighting = function() {
+      $('pre').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    };
+
+
+    $(document).ready(function () {
+      addSingleSnip("Snip 1","int setup() {\n\treturn 1;\n}",10,[["Person A","MY GOODNESS THE FEELS"],["Person B","WHAT ARE YOU SAYING PERSON A"],["Person C","WHY ARE YOU CAPS unlocked please stop shouting."]]);
+      highlighting();
+    });
+
+    addSingleSnip = function(title,content,score,comments) {
+      $("#snip").html('<div class="panel panel-default"><div class="panel-header snip-title"><h3>'+title+'</h3></div><pre class="panel-body snip-body">'+content+'</pre><div class="panel-footer snip-ratings"><h4><span class="label label-success btn btn-default"><i class="fa fa-plus"></i></span> '+score+' <span class="label label-danger btn btn-default"><i class="fa fa-minus"></i></span></h4></div></div>' + $("#snip").html());
+      var commentings = "";
+      for (var i = comments.length - 1; i >= 0; i--) {
+        commentings += '<div class="well well-sm"><h5><strong>' + comments[i][0] + ':</strong></h5><h6>' + comments[i][1] + '</h6></div>';
+      };
+      $("#comments-section").html(commentings);
+      highlighting();
+    }
+    </script>
+  </body>
+</html>

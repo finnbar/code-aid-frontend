@@ -1,0 +1,89 @@
+<!doctype html>
+
+<!-- This is our frontpage! It has the massive search bar and the most recent snips! -->
+
+<html>
+  
+  <head>
+    <title>CodeAid</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://djyhxgczejc94.cloudfront.net/frameworks/bootstrap/3.0.0/themes/white-plum/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles.css" type="text/css"></style>
+  </head>
+  
+  <body>
+    <nav class="navbar navbar-default large-navbar">
+      <div class="container-fluid">
+        <div class="navbar-left">
+          <a class="navbar-brand" href="index.html"><img alt="CodeAid" src="logo3.png" height="50px"></a>
+        </div>
+        <div class="navbar-right">
+          <a class="navbar-brand btn btn-default" id="new-snip-navbar"href="new.html">New Snip <i class="fa fa-file-code-o"></i></a>
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default" id="editorHolder">
+          <div id="panel-header"><h3 id="snip-title-create">Snip: My new Snip</h3></div>
+          <div id="panel-body">
+            <div id="editor"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="panel panel-default">
+          <div id="preferencesEditor">
+            <div id="panel-header"><h3>About your Snip!</h3></div>
+            <div id="panel-body">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  What language is your Snip in? (python)
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="#" onclick="langChange('python')">Python</a></li>
+                  <li><a href="#" onclick="langChange('javascript')">Javascript</a></li>
+                  <li><a href="#" onclick="langChange('lua')">Lua</a></li>
+                  <li><a href="#" onclick="langChange('php')">PHP</a></li>
+                </ul>
+              </div>
+              <span class="input-group" id="textentry">
+                <input type="text" class="form-control" placeholder="Name your Snip!" id="Name">
+                <span class="input-group-btn">
+                  <input type="button" class="btn btn-default" value="Submit!">
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Made by Freddy and Finnbar</p>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var editor = ace.edit("editor");
+      var language = "Python";
+      $(document).ready(function () {
+        $("#editor").height($(window).height()-300);
+      });
+      editor.getSession().setMode("ace/mode/python");
+      editor.setTheme("ace/theme/monokai");
+      $("#Name").bind("keypress", function () {
+        setTimeout(function() {
+          $("#snip-title-create").html("Snip: "+$("#Name").val());
+        },1);
+      });
+      var langChange = function(lang) {
+        language = lang;
+        $("#dropdownMenu1").html("What language is your Snip in? ("+lang+") <span class='caret'></span>");
+        editor.getSession().setMode("ace/mode/"+lang);
+      }
+    </script>
+  </body>
+</html>

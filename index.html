@@ -1,0 +1,131 @@
+<!doctype html>
+
+<!-- This is our frontpage! It has the massive search bar and the most recent snips! -->
+
+<html>
+  
+  <head>
+    <title>CodeAid</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://djyhxgczejc94.cloudfront.net/frameworks/bootstrap/3.0.0/themes/white-plum/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles.css" type="text/css"></style>
+    <link rel="stylesheet" href="highlight/styles/monokai.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  </head>
+  
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-left">
+            <a class="navbar-brand"><img alt="CodeAid" src="logo3.png" height="50px"></a>
+          </div>
+          <div class="navbar-right">
+            <button type="button" class="btn btn-primary" id="helpbtn" data-toggle="modal" data-target="#help">Help!</button>
+            <a class="navbar-brand btn btn-default" id="new-snip-navbar" href="new.html">New Snip <i class="fa fa-file-code-o"></i></a>
+          </div>
+        </div>
+      </nav>
+      <div class="jumbotron">
+        <h1 class="question">What are you making?<br></h1>
+        <form id="search-form" class="form-inline" role="form">
+          <input type="text" id="bigsearch" class="form-control search-form">
+        </form>
+      </div>
+      <div id="snips">
+        <!-- ARR THERE BE SNIPS 'ERE -->
+      </div>
+      <div class="footer">
+        <p>Made by Freddy and Finnbar</p>
+      </div>
+    </div>
+    <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Help!</h4>
+          </div>
+          <div class="modal-body">
+            <center><img src="logo2.png" width="60%" /></center>
+            <br />
+            <br />
+            Hello!
+            <br />
+            <br />
+            Welcome to CodeAid!
+            <br />
+            <br />
+            This is a site for publishing Snips, small sections of code that may be able to help you code larger things! You can search through these with the large search bar on this page, and if you like a particular Snip, you can click on that Snip to have a look at all of its comments, and to upvote it! Or downvote it if you don't like it, but you better have a good reason for it.
+            <br />
+            <br />
+            If you want to create a Snip of your own (once you've logged in), click New Snip to begin!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="highlight/highlight.pack.js"></script>
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script type="text/javascript">
+
+    var highlighting = function() {
+      $('pre').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    };
+
+    $(document).ready(function() {
+      highlighting();
+      var client = algoliasearch("AppID","SearchOnlyAPI");
+      var index = client.initIndex("IndexName");
+
+      $("#bigsearch").bind("keypress",function () {
+        setTimeout(function() {
+          index.search($("#bigsearch").val(), function searchDone(err, content) {
+            if(err) {
+              console.error(err);
+              return;
+            }
+
+            console.log(content);
+          });
+        },1);
+      });
+    });
+
+    var counter = 0;
+
+    clearAllSnips = function() { //removes from the HTML, not the database!
+      $("#snips").html("");
+    };
+
+    addSnip = function(title,content,score,comments,id,above) {
+      var score = "<h4>" + score + " points</h4>";
+      var ratings = "<div class='well well-sm'><h5>"+comments[comments.length-1][0]+": </h5><h6>"+comments[comments.length-1][1]+"</h6></div>";
+      if(comments.length > 1) {
+        ratings += "<div><h5>...and "+(comments.length-1)+" other comment";
+        if(comments.length > 2) {
+          ratings += "s.</h5></div>";
+        } else {
+          ratings += ".</h5></div>"
+        }
+      }
+      if(above) {
+        $("#snips").html('<a href="result.html?id='+id+'"><div class="panel panel-default" id="snip-'+counter+'"><div class="panel-header snip-title"><h3>'+title+'</h3></div><pre class="panel-body snip-body">'+content+'</pre><div class="panel-footer snip-ratings">'+score+ratings+'</div></div></a>' + $("#snips").html());
+      } else {
+        $("#snips").html($("#snips").html()+'<a href="result.html?id='+id+'"><div class="panel panel-default" id="snip-'+counter+'"><div class="panel-header snip-title"><h3>'+title+'</h3></div><pre class="panel-body snip-body">'+content+'</pre><div class="panel-footer snip-ratings">'+score+ratings+'</div></div></a>');
+      }
+      $("#snip-"+counter).hide();
+      $("#snip-"+counter).fadeIn(1000, function(){});
+      highlighting();
+      counter += 1;
+    };
+    </script>
+  </body>
+</html>
