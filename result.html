@@ -64,15 +64,10 @@
 
     var isLoggedIn = function() {
       $.getJSON("http://api.codeaid.xyz/auth/status", function (d) {
-        var count = 0;
         $.each(d,function(k,v) {
-          count += 1;
+          if(k == "id") return true;
         });
-        if(count == 0) {
-          return false;
-        } else {
-          return true;
-        }
+        return false
       });
     };
 
